@@ -44,7 +44,14 @@ module.exports = function (app) {
         updated_on: new Date().toUTCString(),
         project: project
       })
+      newIssue.save((error, savedIssue) => {
+        if(!error && savedIssue) {
+          // console.log(savedIssue)
+          return res.json(savedIssue)
+        }
+      })
     })
+  
     
     .put(function (req, res){
       let project = req.params.project;
