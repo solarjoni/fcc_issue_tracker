@@ -2,6 +2,7 @@ const chaiHttp = require('chai-http');
 const chai = require('chai');
 const assert = chai.assert;
 const server = require('../server');
+const req = require('express/lib/request');
 
 let id1 = ''
 let id2 = ''
@@ -108,18 +109,43 @@ suite('Functional Tests', function() {
       suite('PUT /api/issues/{project}', function() {
     
         test('One field to update => {result: "successfully updated", _id: _id}', function(done) {
-    
-          //done();
+          chai.request(server)
+            .put('/api/issues/test')
+            .send({
+              _id: id1,
+              issue_text: 'new text'
+            })
+            .end(function(err, res) {
+              assert.equal(res.body, 'succesfully updated')
+              done();
+            })
         });
     
         test('Multiple fields to update => {result: "successfully updated", _id: _id}', function(done) {
-    
-          //done();
+          chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            _id: id1,
+            issue_title: 'new title',
+            issue_text: 'new text'
+          })
+          .end(function(err, res) {
+            assert.equal(res.body, 'succesfully updated')
+            done();
+          })
         });
     
         test('No _id submitted => { error: "missing _id" }', function(done) {
-    
-          //done()
+          chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            issue_title: 'new title',
+            issue_text: 'new text'
+          })
+          .end(function(err, res) {
+            assert.equal(res.body, 'missing _id')
+            done();
+          })
         });
     
         test('No fields to update => { error: "no update field(s) sent", _id: _id }', function(done) {
@@ -133,29 +159,68 @@ suite('Functional Tests', function() {
             })
         });
     
-        test('Invalid _id => { error: "missing _id" }', function(done) {
-    
-          //done();
+        test('Invalid _id => { error: "could not update", _id: _id }', function(done) {
+          chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            _id: 'aaa',
+            issue_title: 'new title',
+            issue_text: 'new text'
+          })
+          .end(function(err, res) {
+            let id = res.body
+            assert.equal(res.body, 'could not update ' + id.substring(17))
+            done();
+          })
         });
-    
       });
     
     
       suite('DELETE /api/issues/{project}', function() {
     
         test('Valid _id', function(done) {
-    
-          //done();
+          chai.request(server)
+          .delete('/api/issues/test')
+          .send({
+            _id: id1
+          })
+          .end(function(err, res) {
+            assert.equal(res.body, 'succesfully deleted ' + id1)
+          }) 
+          chai.request(server)
+            .delete('/api/issues/test')
+            .send({
+              _id: id2
+            })
+            .end(function(err, res) {
+              assert.equal(res.body, 'succesfully deleted ' + id2)
+              done();
+            })
         });
+        
         test('Invalid _id => { error: "could not delete", "_id": _id }', function(done) {
-          const badId = "5f665eb46e296f6b9b6a504d";
-    
-          //done();
-        });
+          const badId = "5f665eb46e296f6b9b6a504d"
+          chai.request(server)
+            .delete('/api/issues/test')
+            .send({
+            _id: badId
+            })
+            .end(function(err, res) {
+              let id = res.body
+              assert.equal(res.body, 'could not delete ' + id.substring(17))
+            done();
+          })
+        })
     
         test('No _id => { error: "missing _id" }', function(done) {
-    
-          //done();
+          chai.request(server)
+            .delete('/api/issues/test')
+            .send({
+            })
+            .end(function(err, res) {
+              assert.equal(res.body, 'missing _id')
+              done();
+            })
         });
       });
 });

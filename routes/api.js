@@ -54,7 +54,6 @@ module.exports = function (app) {
       })
     })
   
-    
     .put(function (req, res){
       let project = req.params.project;
       let updateObject = {}
@@ -64,14 +63,43 @@ module.exports = function (app) {
         }
       })
       // console.log(updateObject)
-      if(Object.keys(updateObject.length < 2)) {
+      
+      if(Object.keys(updateObject).length < 2) {
         return res.json('no updated field(s) sent')
       }
+      
+      if(!req.body._id) {
+        return res.json('missing _id')
+      }
+
+      updateObject['updated_on'] = new Date().toUTCString()
+      // console.log(updateObject);
+      Issue.findByIdAndUpdate(
+        req.body._id,
+        updateObject,
+        {new: true},
+        (error, updatedIssue) => {
+          if(!error && updatedIssue) {
+            return res.json('succesfully updated')
+          } else if(!updatedIssue) {
+            return res.json('could not update ' + req.body._id)
+          }
+        }
+      )
     })
     
     .delete(function (req, res){
       let project = req.params.project;
-      
+      if(!req.body._id) {
+        return res.json('missing _id')
+      }
+      Issue.findByIdAndRemove(req.body._id, (error, deletedIssue) => {
+        if(!error && deletedIssue) {
+          res.json('succesfully deleted ' + deletedIssue.id)
+        } else if (!deletedIssue) {
+          res.json('could not delete ' + req.body._id)
+        }
+      })
     });
     
 };
