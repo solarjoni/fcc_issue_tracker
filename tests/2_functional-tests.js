@@ -65,7 +65,7 @@ suite('Functional Tests', function() {
               issues_title: 'Title 3'
             })
             .end(function(err, res) {
-              assert.equal(res.body, 'required field(s) missing')
+              assert.equal(res.body, "error: 'required field(s) missing'")
               done();
             })
         });
