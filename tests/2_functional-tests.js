@@ -123,8 +123,14 @@ suite('Functional Tests', function() {
         });
     
         test('No fields to update => { error: "no update field(s) sent", _id: _id }', function(done) {
-    
-          //done()
+          chai.request(server)
+            .put('/api/issues/test')
+            .send({
+            })
+            .end(function(err, res) {
+              assert.equal(res.body, 'no updated field(s) sent')
+              done()
+            })
         });
     
         test('Invalid _id => { error: "missing _id" }', function(done) {

@@ -28,7 +28,6 @@ module.exports = function (app) {
   app.route('/api/issues/:project')
     .get(function (req, res){
       let project = req.params.project;
-      
     })
     
     .post(function (req, res){
@@ -58,7 +57,16 @@ module.exports = function (app) {
     
     .put(function (req, res){
       let project = req.params.project;
-      
+      let updateObject = {}
+      Object.keys(req.body).forEach((key) => {
+        if(req.body[key] != '') {
+          updateObject[key] = req.body[key]
+        }
+      })
+      // console.log(updateObject)
+      if(Object.keys(updateObject.length < 2)) {
+        return res.json('no updated field(s) sent')
+      }
     })
     
     .delete(function (req, res){
