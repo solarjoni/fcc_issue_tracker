@@ -10,9 +10,9 @@ V    To run the tests in the console, use the command npm run test. To open the 
 
 Write the following tests in tests/2_functional-tests.js:
 
-    Create an issue with every field: POST request to /api/issues/{project}
-    Create an issue with only required fields: POST request to /api/issues/{project}
-    Create an issue with missing required fields: POST request to /api/issues/{project}
+V   Create an issue with every field: POST request to /api/issues/{project}
+V   Create an issue with only required fields: POST request to /api/issues/{project}
+V   Create an issue with missing required fields: POST request to /api/issues/{project}
     View issues on a project: GET request to /api/issues/{project}
     View issues on a project with one filter: GET request to /api/issues/{project}
     View issues on a project with multiple filters: GET request to /api/issues/{project}

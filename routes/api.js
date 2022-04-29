@@ -33,6 +33,9 @@ module.exports = function (app) {
     
     .post(function (req, res){
       let project = req.params.project;
+      if(!req.body.issue_title || !req.body.issue_text || !req.body.created_by) {
+        return res.json('required field(s) missing')
+      }
       let newIssue = new Issue({
         issue_title: req.body.issue_title,
         issue_text: req.body.issue_text,
@@ -44,7 +47,14 @@ module.exports = function (app) {
         updated_on: new Date().toUTCString(),
         project: project
       })
+      newIssue.save((error, savedIssue) => {
+        if(!error && savedIssue) {
+          // console.log(savedIssue)
+          return res.json(savedIssue)
+        }
+      })
     })
+  
     
     .put(function (req, res){
       let project = req.params.project;
