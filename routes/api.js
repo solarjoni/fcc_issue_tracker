@@ -33,7 +33,7 @@ module.exports = function (app) {
     .post(function (req, res){
       let project = req.params.project;
       if(!req.body.issue_title || !req.body.issue_text || !req.body.created_by) {
-        return res.json("error: 'required field(s) missing'")
+        return res.json({error: "required field(s) missing"})
       }
       let newIssue = new Issue({
         issue_title: req.body.issue_title,
@@ -64,11 +64,11 @@ module.exports = function (app) {
       })
       // console.log(updateObject)
       if(!req.body._id) {
-        return res.json('missing _id')
+        return res.json({error: "missing _id"})
       }
       
       if(Object.keys(updateObject).length < 2) {
-        return res.json('no updated field(s) sent')
+        return res.json({error: "no updated field(s) sent"})
       }
       
 
@@ -80,9 +80,9 @@ module.exports = function (app) {
         {new: true},
         (error, updatedIssue) => {
           if(!error && updatedIssue) {
-            return res.json('succesfully updated')
+            return res.json({result: "succesfully updated"})
           } else if(!updatedIssue) {
-            return res.json('could not update ' + req.body._id)
+            return res.json({error: "could not update " + req.body._id})
           }
         }
       )
@@ -91,13 +91,13 @@ module.exports = function (app) {
     .delete(function (req, res){
       let project = req.params.project;
       if(!req.body._id) {
-        return res.json('missing _id')
+        return res.json({error: "missing _id"})
       }
       Issue.findByIdAndRemove(req.body._id, (error, deletedIssue) => {
         if(!error && deletedIssue) {
-          res.json('succesfully deleted ' + deletedIssue.id)
+          res.json({result: "succesfully deleted " + deletedIssue.id})
         } else if (!deletedIssue) {
-          res.json('could not delete ' + req.body._id)
+          res.json({error: "could not delete " + req.body._id})
         }
       })
     });
