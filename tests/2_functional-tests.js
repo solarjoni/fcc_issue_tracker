@@ -72,7 +72,7 @@ suite('Functional Tests', function() {
     
       });
     
-      suite('GET /api/issues/{project}', function() {
+    suite('GET /api/issues/{project}', function() {
     
         test('No filter', function(done) {
           chai.request(server)
@@ -106,7 +106,7 @@ suite('Functional Tests', function() {
     
       });
     
-      suite('PUT /api/issues/{project}', function() {
+    suite('PUT /api/issues/{project}', function() {
     
         test('One field to update => {result: "successfully updated", _id: _id}', function(done) {
           chai.request(server)
@@ -152,6 +152,7 @@ suite('Functional Tests', function() {
           chai.request(server)
             .put('/api/issues/test')
             .send({
+              _id: id1
             })
             .end(function(err, res) {
               assert.equal(res.body, 'no updated field(s) sent')

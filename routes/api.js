@@ -63,14 +63,14 @@ module.exports = function (app) {
         }
       })
       // console.log(updateObject)
+      if(!req.body._id) {
+        return res.json('missing _id')
+      }
       
       if(Object.keys(updateObject).length < 2) {
         return res.json('no updated field(s) sent')
       }
       
-      if(!req.body._id) {
-        return res.json('missing _id')
-      }
 
       updateObject['updated_on'] = new Date().toUTCString()
       // console.log(updateObject);
