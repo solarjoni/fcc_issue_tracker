@@ -80,9 +80,9 @@ module.exports = function (app) {
         {new: true},
         (error, updatedIssue) => {
           if(!error && updatedIssue) {
-            return res.json({result: "succesfully updated ", _id: req.body._id})
+            return res.json({result: "succesfully updated", _id: req.body._id})
           } else if(!updatedIssue) {
-            return res.json({error: "could not update ", _id: req.body._id})
+            return res.json({error: "could not update", _id: req.body._id})
           }
         }
       )
@@ -95,9 +95,9 @@ module.exports = function (app) {
       }
       Issue.findByIdAndRemove(req.body._id, (error, deletedIssue) => {
         if(!error && deletedIssue) {
-          res.json({result: "succesfully deleted ", _id: deletedIssue.id})
+          res.json({result: "succesfully deleted", _id: deletedIssue.id})
         } else if (!deletedIssue) {
-          res.json({error: "could not delete ", _id: req.body._id})
+          res.json({error: "could not delete", _id: req.body._id})
         }
       })
     });
