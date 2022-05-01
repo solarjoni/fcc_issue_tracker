@@ -17,9 +17,9 @@ module.exports = function (app) {
     created_by: {type: String, required: true},
     assigned_to: String,
     status_text: String,
-    open: {type: Boolean, required: true},
-    created_on: {type: Date, required: true},
-    updated_on: {type: Date, required: true},
+    open: {type: Boolean},
+    created_on: {type: Date},
+    updated_on: {type: Date},
     project: String
   })
 
