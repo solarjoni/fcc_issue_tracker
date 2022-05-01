@@ -56,16 +56,19 @@ module.exports = function (app) {
   
     .put(function (req, res){
       let project = req.params.project;
+      console.log(req.body._id)
+      if(!req.body._id) {
+        return res.json({error: "missing _id"})
+      }
+
       let updateObject = {}
+
       Object.keys(req.body).forEach((key) => {
         if(req.body[key] != '') {
           updateObject[key] = req.body[key]
         }
       })
       // console.log(updateObject)
-      if(!req.body._id) {
-        return res.json({error: "missing _id"})
-      }
       
       if(Object.keys(updateObject).length < 2) {
         return res.json({error: "no updated field(s) sent"})
@@ -80,7 +83,7 @@ module.exports = function (app) {
         {new: true},
         (error, updatedIssue) => {
           if(!error && updatedIssue) {
-            return res.json({result: "succesfully updated", _id: req.body._id})
+            return res.json({result: "successfully updated", _id: req.body._id})
           } else if(!updatedIssue) {
             return res.json({error: "could not update", _id: req.body._id})
           }
@@ -95,7 +98,7 @@ module.exports = function (app) {
       }
       Issue.findByIdAndRemove(req.body._id, (error, deletedIssue) => {
         if(!error && deletedIssue) {
-          res.json({result: "succesfully deleted", _id: deletedIssue.id})
+          res.json({result: "successfully deleted", _id: deletedIssue.id})
         } else if (!deletedIssue) {
           res.json({error: "could not delete", _id: req.body._id})
         }
