@@ -81,7 +81,7 @@ module.exports = function (app) {
       // console.log(updateObject)
       
       if(Object.keys(updateObject).length < 2) {
-        return res.json({ error: "no updated field(s) sent" })
+        return res.json({ error: "no updated field(s) sent", _id: req.body._id })
       }
       
 
