@@ -95,15 +95,31 @@ suite('Functional Tests', function() {
         });
     
         test('One filter', function(done) {
-    
-          //done();
+          chai.request(server)
+          .get('/api/issues/test')
+          .query({ created_by: 'Functional Test - Every field filled in' })
+          .end(function(err, res) {
+            res.body.forEach((issueResult) => {
+              assert.equal(issueResult.created_by, 'Functional Test - Every field filled in')
+            })
+            done();
+          })
         });
     
         test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
-    
-          //done();
+          chai.request(server)
+          .get('/api/issues/test')
+          .query({
+            open: true, 
+            created_by: 'Functional Test - Every field filled in' })
+          .end(function(err, res) {
+            res.body.forEach((issueResult) => {
+              assert.equal(issueResult.open, true)
+              assert.equal(issueResult.created_by, 'Functional Test - Every field filled in')
+            })
+            done();
+          })
         });
-    
       });
     
     suite('PUT /api/issues/{project}', function() {
@@ -170,8 +186,7 @@ suite('Functional Tests', function() {
             issue_text: 'new text'
           })
           .end(function(err, res) {
-            let id = res.body._id
-            assert.equal(res.body.error + ' ' + res.body._id, 'could not update ' + id)
+            assert.equal(res.body.error + ' ' + res.body._id, 'could not update ' + res.body._id)
             done();
           })
         });

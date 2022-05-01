@@ -27,7 +27,17 @@ module.exports = function (app) {
   
   app.route('/api/issues/:project')
     .get(function (req, res){
-      let project = req.params.project;
+      let project = req.params.project
+      let filterObject = Object.assign(req.query)
+      filterObject['project'] = project
+      Issue.find(
+        filterObject,
+        (error, arrayOfResults) => {
+          if(!error && arrayOfResults) {
+            return res.json(arrayOfResults)
+          }
+        }
+      )
     })
     
     .post(function (req, res){
@@ -56,7 +66,7 @@ module.exports = function (app) {
   
     .put(function (req, res){
       let project = req.params.project;
-      console.log(req.body._id)
+      // console.log(req.body._id)
       if(!req.body._id) {
         return res.json({ error: "missing _id" })
       }
