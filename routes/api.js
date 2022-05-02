@@ -73,17 +73,27 @@ module.exports = function (app) {
 
       let updateObject = {}
 
-      Object.keys(req.body).forEach((key) => {
-        if(req.body[key] != '') {
-          updateObject[key] = req.body[key]
-        }
-      })
+      // Object.keys(req.body).forEach((key) => {
+      //   if(req.body[key] != '') {
+      //     updateObject[key] = req.body[key]
+      //   }
+      // })
       // console.log(updateObject)
       
-      if(Object.keys(updateObject).length < 2) {
-        return res.json({ error: "no updated field(s) sent", _id: req.body._id })
+      // if(Object.keys(updateObject).length < 2) {
+      //   return res.json({ error: "no updated field(s) sent", _id: req.body._id })
+      // }
+      if (
+        !req.body.issue_title &&
+        !req.body.issue_text &&
+        !req.body.created_by &&
+        !req.body.assigned_to &&
+        !req.body.status_text &&
+        req.body.open == undefined
+      ) {
+        res.json({ error: "no update field(s) sent", _id: req.body._id });
+        return 0;
       }
-      
 
       updateObject['updated_on'] = new Date().toUTCString()
       // console.log(updateObject);
@@ -92,6 +102,7 @@ module.exports = function (app) {
         updateObject,
         {new: true},
         (error, updatedIssue) => {
+          // console.log(updatedIssue)
           if(!error && updatedIssue) {
             return res.json({ result: "successfully updated", _id: req.body._id })
           } else if(!updatedIssue) {

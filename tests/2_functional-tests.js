@@ -172,7 +172,7 @@ suite('Functional Tests', function() {
               _id: id1
             })
             .end(function(err, res) {
-              assert.equal(res.body.error, 'no updated field(s) sent')
+              assert.equal(res.body.error, 'no update field(s) sent')
               done()
             })
         });
